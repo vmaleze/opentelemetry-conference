@@ -15,6 +15,22 @@ hideInToc: true
 
 <img src="/images/otel-logo.png" class="absolute-center op-60 -z-1"/>
 
+---
+title: IceBreaker
+layout: default
+---
+
+# Kids
+
+<v-clicks>
+
+<img src="/images/kid-paint.jpeg" class="absolute-center w-1/2 rotate-10 z-0"/>
+<img src="/images/kid-hair.webp" class="absolute-center w-1/2 -rotate-10 z-1"/>
+<img src="/images/kids-jumping.jpeg" class="absolute-center z-2"/>
+
+
+</v-clicks>
+
 
 ---
 title: About Me
