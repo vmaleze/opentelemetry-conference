@@ -10,8 +10,10 @@ mdc: true
 hideInToc: true
 ---
 
-<h1 class="absolute-center z-1 w-5/6 ">OpenTelemetry: vous ne pourrez plus vous passer de monitoring en prod</h1>
-<img src="/images/otel-logo.png" class="absolute-center op-60 z-0"/>
+# OpenTelemetry
+## Vous ne pourrez plus vous passer de monitoring en prod
+
+<img src="/images/otel-logo.png" class="absolute-center op-60 -z-1"/>
 
 
 ---
@@ -33,7 +35,6 @@ speakerCompanyLogo: /images/ippon.png
 * Sujets du moments
     * Microservices <logos-kubernetes />
     * DevOps 🛠️
-
 * <logos-twitter /> <logos-github-octocat />@vmaleze
 
 ---
@@ -251,7 +252,6 @@ layout: default
 layout: two-cols-three-span
 classRight: col-span-2 overflow-auto
 clicks: 4
-highlighter: shiki
 ---
 
 # Le collecteur
@@ -295,7 +295,8 @@ spec:
 
     exporters:
       loki:
-        endpoint: http://loki.monitoring:3100/loki/api/v1/push
+        endpoint: http://loki.monitoring:3100/
+          loki/api/v1/push
       otlp/tempo:
         endpoint: tempo.monitoring:4317
         tls:
@@ -482,3 +483,72 @@ Prometheus
 * Gère les données grace a une format basé sur les time-series
 
 </v-clicks>
+
+---
+layout: cover
+background: /images/datacenter.jpeg
+class: text-center
+---
+
+# Et si on consommait de manière responsable ?
+
+<img src="/images/vegeta.png" v-click class="absolute-center op-60 -z-1"/>
+
+---
+layout: two-cols-three-span
+classRight: col-span-2 overflow-auto
+clicks: 4
+---
+
+# Le scaling automagique
+Horizontal Pod Autoscaler
+
+<div class="mt-2rem">
+
+<v-clicks>
+
+* Nombre de replicas
+* Sur quoi on se base ?
+  * Metrics de reference
+  * Valeur moyenne
+* Comportement custom
+
+</v-clicks>
+
+
+<logos-prometheus v-click class="mt-10 w-3/4 text-6xl" />
+
+</div>
+
+::right::
+
+```yaml {2|4-5|6-13|14-16|10} {lines:true, at:0, maxHeight: 'full'}
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+...
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+    - type: Pods
+      pods:
+        metric:
+          name: http_server_requests_per_seconds
+        target:
+          type: AverageValue
+          averageValue: "8"
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 60
+```
+
+---
+title: Grafana
+layout: iframe
+url: http://localhost:3000
+---
+
+---
+title: End
+layout: image
+image: /images/ippon-contact.png
+---

@@ -39,6 +39,10 @@
   }
 }
 
+.slidev-layout.cover {
+  @apply -z-2
+}
+
 .slidev-layout.two-cols-header {
   @apply grid-rows-none
 
