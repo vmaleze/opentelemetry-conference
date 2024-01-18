@@ -223,14 +223,14 @@ Vers les backend directement
 layout: default
 ---
 
-# Vers où exporte les données ?
+# Vers où exporte-t'on les données ?
 Vers un collecteur opentelemetry
 
 <div class="mt-4rem">
 
-|                                   |                          |
-| --------------------------------- | ------------------------ |
-| <kbd>OTEL_SERVICE_NAME</kbd>      | Nom du service           |
+|                                        |                          |
+| -------------------------------------- | ------------------------ |
+| <kbd>OTEL_SERVICE_NAME</kbd>           | Nom du service           |
 | <kbd>OTEL_EXPORTER_OTLP_ENDPOINT</kbd> | Collecteur opentelemetry |
 
 </div>
@@ -256,10 +256,10 @@ layout: default
 
 <div class="text-lg mt-5rem">
 
-|                                   |                          |
-| --------------------------------- | ------------------------ |
-| <kbd>Operator</kbd>      | Manage les resources OpenTelemetry via les CRDs k8s           |
-| <kbd>Collector</kbd> | Reçoit et exportes les données |
+|                                 |                                                           |
+| ------------------------------- | --------------------------------------------------------- |
+| <kbd>Operator</kbd>             | Manage les resources OpenTelemetry via les CRDs k8s       |
+| <kbd>Collector</kbd>            | Reçoit et exporte les données                             |
 | <kbd>Auto Instrumentation</kbd> | Injecte l’agent java directement dans le conteneur docker |
 
 </div>
@@ -292,7 +292,7 @@ Déploiement et configuration
 
 ::right::
 
-```yaml {1-15|6|9-13|17-25|27-36} {lines:true, at:0, maxHeight:'full'}
+```yaml {1-15|6|9-13|17-26|27-37} {lines:true, at:0, maxHeight:'full'}
 apiVersion: opentelemetry.io/v1alpha1
 kind: OpenTelemetryCollector
 metadata:
