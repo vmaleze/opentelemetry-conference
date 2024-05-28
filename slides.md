@@ -1,5 +1,6 @@
 ---
 theme: seriph
+colorSchema: light
 favicon: /images/otel-logo.png
 background: /images/stars.avif
 class: text-center
@@ -198,6 +199,7 @@ CMD java -javaagent:/app/bin/opentelemetry-javaagent.jar \
 
 ---
 layout: default
+transition: slide-up
 ---
 
 # Comment ça marche ?
@@ -209,7 +211,7 @@ layout: default
 transition: fade
 ---
 
-# Vers où exporte les données ?
+# Exporter les données #1 ?
 Vers les backend directement
 
 |                                                                                   |                               |
@@ -223,7 +225,7 @@ Vers les backend directement
 layout: default
 ---
 
-# Vers où exporte-t'on les données ?
+# Exporter les données #2 ?
 Vers un collecteur opentelemetry
 
 <div class="mt-4rem">
@@ -267,7 +269,7 @@ layout: default
 ---
 layout: two-cols-three-span
 classRight: col-span-2 overflow-auto
-clicks: 4
+clicks: 5
 ---
 
 # Le collecteur
@@ -282,6 +284,7 @@ Déploiement et configuration
   * Daemonset
 * Collecte des données
   * Push / Pull
+* Process des données (optionnel)
 * Export des données
   * Liste des différents backend
   * Exposition de données
@@ -292,40 +295,58 @@ Déploiement et configuration
 
 ::right::
 
-```yaml {1-15|6|9-13|17-26|27-37} {lines:true, at:0, maxHeight:'full'}
-apiVersion: opentelemetry.io/v1alpha1
+```yaml {1-9|7|10-14|15-21|23-38|42-55} {lines:true, at:0, maxHeight:'full'}
+apiVersion: opentelemetry.io/v1beta1
 kind: OpenTelemetryCollector
 metadata:
   name: otel-sidecar
+  namespace: training
 spec:
   mode: sidecar
-  config: |
-
+  image: otel/opentelemetry-collector-contrib
+  config:
     receivers:
       otlp:
         protocols:
-          grpc:
-          http:
+          grpc: {}
+          http: {}
     processors:
-      batch:
+      resource:
+        attributes:
+          - action: insert
+            key: loki.resource.labels
+            value: service.name, k8s.pod.name, k8s.namespace.name
+      batch: {}
 
     exporters:
       loki:
-        endpoint: http://loki.monitoring:3100/
-          loki/api/v1/push
+        endpoint: http://loki.monitoring:3100/loki/api/v1/push
+        default_labels_enabled:
+          exporter: false
+          job: false
+      otlp/jaeger:
+        endpoint: jaeger.monitoring:4317
+        tls:
+          insecure: true
       otlp/tempo:
         endpoint: tempo.monitoring:4317
         tls:
           insecure: true
       prometheus:
         endpoint: "0.0.0.0:8889"
+      debug:
+        verbosity: detailed
 
     service:
       pipelines:
+        logs:
+          receivers: [otlp]
+          processors: [resource]
+          exporters: [loki]
         traces:
           receivers: [otlp]
           processors: [batch]
-          exporters: [otlp/tempo]
+          exporters: [otlp/jaeger, otlp/tempo]
         metrics:
           receivers: [otlp]
           processors: [batch]
@@ -348,7 +369,7 @@ metadata:
   name: otel-auto-instrumentation
 spec:
   exporter:
-    endpoint: http://0.0.0.0:4317
+    endpoint: http://0.0.0.0:4318
 ```
 
 </div>
@@ -473,9 +494,7 @@ Loki
   * Dates
   * Erreurs
   * Traces
-* Basé sur un collecteur de logs tels que
-  * FluentBit / FluentD
-  * FileLogReceiver
+* Reçoit les données via un système de push depuis le collecteur
 
 </v-clicks>
 
