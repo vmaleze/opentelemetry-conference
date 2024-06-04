@@ -370,6 +370,8 @@ metadata:
 spec:
   exporter:
     endpoint: http://0.0.0.0:4318
+  sampler:
+    type: parentbased_always_on
 ```
 
 </div>
