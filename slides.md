@@ -295,7 +295,7 @@ Déploiement et configuration
 
 ::right::
 
-```yaml {1-9|7|10-14|15-21|23-38|42-55} {lines:true, at:0, maxHeight:'full'}
+```yaml {1-9|7|10-14|15-20|22-37|39-52} {lines:true, at:0, maxHeight:'full'}
 apiVersion: opentelemetry.io/v1beta1
 kind: OpenTelemetryCollector
 metadata:
@@ -316,7 +316,6 @@ spec:
           - action: insert
             key: loki.resource.labels
             value: service.name, k8s.pod.name, k8s.namespace.name
-      batch: {}
 
     exporters:
       loki:
@@ -334,8 +333,6 @@ spec:
           insecure: true
       prometheus:
         endpoint: "0.0.0.0:8889"
-      debug:
-        verbosity: detailed
 
     service:
       pipelines:
@@ -345,11 +342,11 @@ spec:
           exporters: [loki]
         traces:
           receivers: [otlp]
-          processors: [batch]
+          processors: []
           exporters: [otlp/jaeger, otlp/tempo]
         metrics:
           receivers: [otlp]
-          processors: [batch]
+          processors: []
           exporters: [prometheus]
 ```
 
@@ -393,7 +390,7 @@ clicks: 2
 
 </v-clicks>
 
-```yaml {all|4|5} {lines:true, at:0, maxHeight:'full'}
+```yaml {1-3|4|5} {lines:true, at:0, maxHeight:'full'}
 template:
   metadata:
     annotations:
@@ -583,6 +580,41 @@ title: Grafana
 layout: iframe
 url: http://localhost:3000
 ---
+
+---
+layout: image-blur
+image: /images/dewey.png
+imageHeight: h-3/5
+contentClass: text-1xl
+clicks: 3
+---
+
+::header::
+# Sampling
+
+::content::
+<v-clicks>
+
+* Head Sampling
+  * On décide dès qu'on reçoit une requête
+  * Très performant
+  * Peu customisable
+  * Simple à mettre en place
+
+<br />
+<v-after>
+
+* Tail sampling
+  * On attends la fin de la requête pour décider
+  * Customisable sur beaucoup d'aspects
+  * Complexe à mettre en place
+    * Combien de temps on attends ?
+    * Comment on décide si la requête est vraiment utile ou non ?
+  * Attention aux resources du collecteur
+
+</v-after>
+
+</v-clicks>
 
 ---
 title: End
