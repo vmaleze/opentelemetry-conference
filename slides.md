@@ -211,6 +211,13 @@ url: https://signoz.devoxx-demo.sbx.aws.ippon.fr/
 ---
 
 ---
+title: Archi finale
+layout: image
+image: /images/otlp-archi.png
+backgroundSize: contain
+---
+
+---
 title: End
 layout: image
 image: /images/ippon-contact.png
