@@ -218,6 +218,27 @@ backgroundSize: contain
 ---
 
 ---
+title: Dewey - Sampling
+layout: image
+image: /images/dewey.png
+backgroundSize: contain
+---
+
+---
+title: Sampling
+layout: image
+image: /images/sampling.svg
+backgroundSize: contain
+---
+
+---
+title: Tail Sampling
+layout: image
+image: /images/tail-sampling.svg
+backgroundSize: contain
+---
+
+---
 title: End
 layout: image
 image: /images/ippon-contact.png
